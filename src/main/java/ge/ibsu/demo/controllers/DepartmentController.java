@@ -1,13 +1,8 @@
 package ge.ibsu.demo.controllers;
 
-import ge.ibsu.demo.entities.Department;
-import ge.ibsu.demo.entities.Employee;
+import ge.ibsu.demo.dto.DepartmentDTO;
 import ge.ibsu.demo.services.DepartmentService;
-import ge.ibsu.demo.services.EmployeeService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,25 +12,22 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
 
-    private final EmployeeService employeeService;
-
-    public DepartmentController(DepartmentService departmentService, EmployeeService employeeService) {
+    public DepartmentController(DepartmentService departmentService) {
         this.departmentService = departmentService;
-        this.employeeService = employeeService;
     }
 
-    @GetMapping("/all")
-    public List<Department> getAll() {
-        return departmentService.getAll();
+    // 🔹 GET all + filtering
+    @GetMapping
+    public List<DepartmentDTO> getDepartments(
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) String city
+    ) {
+        return departmentService.getDepartments(country, city);
     }
 
+    // 🔹 GET by id (DTO version recommended)
     @GetMapping("/{id}")
-    public Department getById(@PathVariable Long id) throws Exception {
+    public DepartmentDTO getById(@PathVariable Long id) {
         return departmentService.getById(id);
-    }
-
-    @GetMapping("/{id}/employees")
-    public List<Employee> getEmployees(@PathVariable Long id) {
-        return employeeService.getByDepartment(id);
     }
 }

@@ -1,26 +1,33 @@
 package ge.ibsu.demo.services;
 
-import ge.ibsu.demo.entities.Department;
-import ge.ibsu.demo.repositories.DepartmentRepository;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import ge.ibsu.demo.dto.DepartmentDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DepartmentService {
 
-    private final DepartmentRepository departmentRepository;
+    private final List<DepartmentDTO> departments = new ArrayList<>();
 
-    public DepartmentService(DepartmentRepository departmentRepository) {
-        this.departmentRepository = departmentRepository;
+    public DepartmentService() {
+        // test data
+        departments.add(new DepartmentDTO("IT", "John Doe", "USA", "New York", "5th Avenue"));
+        departments.add(new DepartmentDTO("HR", "Jane Smith", "UK", "London", "Baker Street"));
     }
 
-    public List<Department> getAll() {
-        return departmentRepository.findAll();
+    public List<DepartmentDTO> getDepartments(String country, String city) {
+        return departments.stream()
+                .filter(d -> country == null || d.getCountry().equalsIgnoreCase(country))
+                .filter(d -> city == null || d.getCity().equalsIgnoreCase(city))
+                .toList();
     }
 
-    public Department getById(Long id) throws Exception {
-        return  departmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("DEPARTMENT_NOT_FOUND"));
+    public DepartmentDTO getById(Long id) {
+        if (id < 0 || id >= departments.size()) {
+            throw new RuntimeException("Department not found");
+        }
+        return departments.get(id.intValue());
     }
 }

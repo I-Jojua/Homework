@@ -1,9 +1,6 @@
 package ge.ibsu.demo.services;
 
-import ge.ibsu.demo.dto.AddEmployee;
-import ge.ibsu.demo.dto.EmployeeContactInfo;
-import ge.ibsu.demo.dto.Paging;
-import ge.ibsu.demo.dto.SearchEmployee;
+import ge.ibsu.demo.dto.*;
 import ge.ibsu.demo.entities.Department;
 import ge.ibsu.demo.entities.Employee;
 import ge.ibsu.demo.repositories.EmployeeRepository;
@@ -52,7 +49,7 @@ public class EmployeeService {
         GeneralUtil.getCopyOf(data, employee);
         employee.setHireDate(new Date());
 
-        Department department = this.departmentService.getById(data.getDepartmentId());
+        DepartmentDTO department = this.departmentService.getById(data.getDepartmentId());
 
         employee.setDepartment(department);
 
