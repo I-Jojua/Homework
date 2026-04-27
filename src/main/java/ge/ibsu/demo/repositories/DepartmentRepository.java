@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
+    // 🔹 შენი ძველი DTO query (არ ვშლით)
     @Query("""
         SELECT new ge.ibsu.demo.dto.DepartmentDTO(
             d.name,
@@ -29,4 +30,8 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
             @Param("country") String country,
             @Param("city") String city
     );
+
+    // 🔥 ახალი — დავალებისთვის (JOIN FETCH)
+    @Query("SELECT d FROM Department d JOIN FETCH d.employees")
+    List<Department> findAllWithEmployees();
 }

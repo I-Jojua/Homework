@@ -1,4 +1,5 @@
 package ge.ibsu.demo.entities;
 
-public class OrderStatus {
+public enum OrderStatus {
+    NEW, SHIPPED, CANCELLED
 }

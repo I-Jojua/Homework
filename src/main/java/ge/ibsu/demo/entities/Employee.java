@@ -1,7 +1,6 @@
 package ge.ibsu.demo.entities;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
 
 @Entity
@@ -29,11 +28,15 @@ public class Employee {
     private Double salary;
 
     @Column(name = "hire_date")
+    @Temporal(TemporalType.DATE)
     private Date hireDate;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
+
+    // ====== GETTERS & SETTERS ======
 
     public Long getId() {
         return id;
